@@ -1,0 +1,94 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Noto+Serif+KR:wght@300;400;600&display=swap");
+@import "tailwindcss";
+
+:root {
+  --cream: #f9f6f2;
+  --cream-dark: #f0ebe4;
+  --cream-darker: #e8e0d8;
+  --rose: #c48585;
+  --rose-light: #d4b8b8;
+  --rose-muted: #8b7070;
+  --rose-pale: #f0e8e8;
+  --text-dark: #4a3f3f;
+  --text-medium: #7a6b6b;
+  --text-light: #a89090;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: #333;
+  min-height: 100%;
+}
+
+body {
+  font-family: "Noto Serif KR", "Malgun Gothic", serif;
+  color: var(--text-dark);
+  -webkit-font-smoothing: antialiased;
+}
+
+.invitation-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 430px;
+  margin: 0 auto;
+  background: var(--cream);
+  min-height: 100vh;
+  overflow: hidden;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
+}
+
+.section {
+  padding: 50px 24px;
+  border-bottom: 1px solid var(--cream-darker);
+}
+
+.section:last-child {
+  border-bottom: none;
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.section-subtitle {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: var(--rose-light);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.section-heading {
+  font-size: 17px;
+  color: var(--rose-muted);
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+
+.font-cormorant {
+  font-family: "Cormorant Garamond", serif;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.8s ease forwards;
+}
