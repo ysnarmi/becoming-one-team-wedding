@@ -4,6 +4,8 @@ import CalendarSection from "@/components/CalendarSection";
 import GallerySection from "@/components/GallerySection";
 import DirectionsSection from "@/components/DirectionsSection";
 import AccountSection from "@/components/AccountSection";
+import MusicToggle from "@/components/MusicToggle";
+import ShareSection from "@/components/ShareSection";
 import { WEDDING } from "@/lib/config";
 
 export default function Home() {
@@ -19,12 +21,14 @@ export default function Home() {
       }}
     >
       <div className="invitation-wrap">
+        <MusicToggle />
         <Hero />
         <InvitationText />
         <CalendarSection />
         <GallerySection />
         <DirectionsSection />
         <AccountSection />
+        <ShareSection />
 
         <footer
           style={{

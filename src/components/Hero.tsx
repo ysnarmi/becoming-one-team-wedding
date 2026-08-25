@@ -1,6 +1,7 @@
 import { WEDDING } from "@/lib/config";
 import Image from "next/image";
-import FallingSnow from "./FallingSnow";
+
+const SNOW_VIDEO = "/images/flowers/snow_00.mp4";
 
 export default function Hero() {
   const { date, groom, bride, venue, photos } = WEDDING;
@@ -50,7 +51,7 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Main photo — 꽃이 이 위에 떨어집니다 */}
+      {/* Main photo — 눈 내리는 영상이 이 위에 겹쳐집니다 */}
       <div style={{ padding: "0 28px" }}>
         <div
           style={{
@@ -67,7 +68,22 @@ export default function Hero() {
             style={{ objectFit: "cover", transform: "scale(1.25)" }}
             priority
           />
-          <FallingSnow count={30} />
+          <video
+            src={SNOW_VIDEO}
+            autoPlay
+            loop
+            muted
+            playsInline
+            style={{
+              position: "absolute",
+              inset: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              pointerEvents: "none",
+              mixBlendMode: "screen",
+            }}
+          />
         </div>
       </div>
 
@@ -111,7 +127,8 @@ export default function Hero() {
           </div>
           <div>{date.displayTime}</div>
           <div>
-            {venue.name} {venue.hall}
+            {venue.name}
+            {venue.hall && ` ${venue.hall}`}
           </div>
         </div>
       </div>

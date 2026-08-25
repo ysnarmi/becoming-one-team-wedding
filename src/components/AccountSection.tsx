@@ -214,7 +214,9 @@ function AccountGroup({
           maxHeight: open ? `${(contentRef.current?.scrollHeight ?? 400)}px` : "0px",
           transition: "max-height .4s ease",
           borderRadius: "0 0 6px 6px",
-          border: open ? "1px solid var(--cream-darker)" : "none",
+          borderLeft: open ? "1px solid var(--cream-darker)" : "none",
+          borderRight: open ? "1px solid var(--cream-darker)" : "none",
+          borderBottom: open ? "1px solid var(--cream-darker)" : "none",
           borderTop: "none",
         }}
       >
