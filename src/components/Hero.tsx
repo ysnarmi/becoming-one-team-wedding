@@ -1,23 +1,9 @@
-"use client";
-
 import { WEDDING } from "@/lib/config";
 import Image from "next/image";
-import { useEffect, useRef } from "react";
-
-const SNOW_VIDEO = "/images/flowers/snow_00.mp4";
+import FallingSnow from "./FallingSnow";
 
 export default function Hero() {
   const { date, groom, bride, venue, photos } = WEDDING;
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-    // React가 muted 속성을 SSR 마크업에 반영하지 않아 모바일에서 자동재생이
-    // 막히고 재생 버튼이 뜨는 경우가 있어, 직접 속성을 설정하고 재생을 시도한다
-    video.muted = true;
-    video.play().catch(() => {});
-  }, []);
 
   return (
     <div
@@ -81,23 +67,7 @@ export default function Hero() {
             style={{ objectFit: "cover" }}
             priority
           />
-          <video
-            ref={videoRef}
-            src={SNOW_VIDEO}
-            autoPlay
-            loop
-            muted
-            playsInline
-            style={{
-              position: "absolute",
-              inset: 0,
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              pointerEvents: "none",
-              mixBlendMode: "screen",
-            }}
-          />
+          <FallingSnow count={30} />
         </div>
       </div>
 

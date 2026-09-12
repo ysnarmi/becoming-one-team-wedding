@@ -56,13 +56,19 @@ export default function ShareSection() {
       window.Kakao.Share.sendDefault({
         objectType: "feed",
         content: {
-          title: `${WEDDING.groom.name} ♥ ${WEDDING.bride.name} 결혼합니다`,
-          description: `${WEDDING.date.year}.${WEDDING.date.month}.${WEDDING.date.day} ${WEDDING.date.displayTime} · ${WEDDING.venue.name}`,
+          title: `${WEDDING.groom.name} · ${WEDDING.bride.name} 결혼식`,
+          description: `${WEDDING.date.month}월 ${WEDDING.date.day}일(${WEDDING.date.dayName.slice(0, 1)}) ${WEDDING.date.displayTime} 결혼합니다.`,
           imageUrl: WEDDING.photos[0]?.startsWith("http")
             ? WEDDING.photos[0]
             : `${url.replace(/\/$/, "")}${WEDDING.photos[0]}`,
           link: { mobileWebUrl: url, webUrl: url },
         },
+        buttons: [
+          {
+            title: "모바일 초대장 보기",
+            link: { mobileWebUrl: url, webUrl: url },
+          },
+        ],
       });
     } catch {
       alert("카카오톡 공유를 불러오지 못했어요. 잠시 후 다시 시도해주세요.");
