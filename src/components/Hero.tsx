@@ -1,6 +1,5 @@
 import { WEDDING } from "@/lib/config";
 import Image from "next/image";
-import FallingSnow from "./FallingSnow";
 
 export default function Hero() {
   const { date, groom, bride, venue, photos } = WEDDING;
@@ -67,7 +66,6 @@ export default function Hero() {
             style={{ objectFit: "cover" }}
             priority
           />
-          <FallingSnow count={30} />
         </div>
       </div>
 
@@ -85,7 +83,7 @@ export default function Hero() {
             color: "var(--text-dark)",
           }}
         >
-          <span>{groom.name}</span>
+          <span>{groom.fullName}</span>
           <span
             style={{
               width: "1px",
@@ -95,7 +93,7 @@ export default function Hero() {
               display: "inline-block",
             }}
           />
-          <span>{bride.name}</span>
+          <span>{bride.fullName}</span>
         </div>
 
         <div

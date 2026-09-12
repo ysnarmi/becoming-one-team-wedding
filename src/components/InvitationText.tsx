@@ -37,14 +37,14 @@ export default function InvitationText() {
             {groom.father} · {groom.mother}
           </span>
           <span style={{ color: "var(--text-light)", fontSize: "11px", margin: "0 6px" }}>의 아들</span>
-          <strong style={{ color: "var(--text-dark)", fontWeight: "600" }}>{groom.name}</strong>
+          <strong style={{ color: "var(--text-dark)", fontWeight: "600" }}>{groom.fullName}</strong>
         </div>
         <div>
           <span style={{ color: "var(--text-light)" }}>
             {bride.father} · {bride.mother}
           </span>
           <span style={{ color: "var(--text-light)", fontSize: "11px", margin: "0 6px" }}>의 딸</span>
-          <strong style={{ color: "var(--text-dark)", fontWeight: "600" }}>{bride.name}</strong>
+          <strong style={{ color: "var(--text-dark)", fontWeight: "600" }}>{bride.fullName}</strong>
         </div>
       </div>
     </div>

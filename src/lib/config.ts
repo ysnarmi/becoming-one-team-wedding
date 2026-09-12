@@ -33,10 +33,10 @@ export const WEDDING = {
     year: 2026,
     month: 12,
     day: 5,
-    hour: 13,
-    minute: 30,
+    hour: 11,
+    minute: 0,
     dayName: "토요일",
-    displayTime: "오후 1시 30분",
+    displayTime: "오전 11시",
   },
   venue: {
     name: "KDW웨딩예식장",

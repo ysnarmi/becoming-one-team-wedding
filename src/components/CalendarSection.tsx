@@ -237,9 +237,9 @@ export default function CalendarSection() {
               letterSpacing: "-0.5px",
             }}
           >
-            <span>{groom.name}</span>
+            <span>{groom.fullName}</span>
             <span style={{ color: "var(--rose)", fontSize: "11px", margin: "0 4px" }}>♥</span>
-            <span>{bride.name}</span>
+            <span>{bride.fullName}</span>
             <span>의 결혼식이 </span>
             <span style={{ color: "var(--rose)" }}>{t.days + 1}일</span>
             <span> 남았습니다.</span>

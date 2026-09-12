@@ -47,7 +47,7 @@ export default function Home() {
               margin: "0 0 6px",
             }}
           >
-            {groom.name} ♥ {bride.name}
+            {groom.fullName} ♥ {bride.fullName}
           </p>
           <p
             style={{

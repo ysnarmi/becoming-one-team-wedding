@@ -18,6 +18,30 @@ const CYCLE: { col: 1 | 2; span: 1 | 2; ratio: string; rowOffset: number }[] = [
 ];
 const ROWS_PER_CYCLE = 4;
 
+// 사진별로 얼굴 위치가 달라서 crop 기준점을 하나씩 지정 (기본값: center)
+// 필요한 사진만 "top" / "bottom" / "20% 30%" 등으로 추가하면 됨
+const PHOTO_POSITION: Record<string, string> = {
+  "/images/gallery/11.jpg": "top",
+  "/images/gallery/10.jpg": "bottom",
+  "/images/gallery/5.jpg": "bottom",
+};
+const getPosition = (src: string) => PHOTO_POSITION[src] ?? "center";
+
+// 사진별로 박스 높이 자체를 키워야 하면 배율을 지정 (기본 가로 사진 높이의 배수, 기본값 1)
+const PHOTO_HEIGHT_SCALE: Record<string, number> = {
+  "/images/gallery/12.jpg": 1.2,
+  "/images/gallery/6.jpg": 1.6,
+  "/images/gallery/10.jpg": 1.2,
+  "/images/gallery/3.jpg": 1.3,
+  "/images/gallery/5.jpg": 1.4,
+};
+const getRatio = (src: string, baseRatio: string) => {
+  const scale = PHOTO_HEIGHT_SCALE[src];
+  if (!scale) return baseRatio;
+  const [w, h] = baseRatio.split("/").map((n) => parseFloat(n));
+  return `${w} / ${h * scale}`;
+};
+
 export default function GallerySection() {
   // 맨 위 타이틀 사진(photos[0])은 갤러리에서 제외
   const photos = WEDDING.photos.slice(1);
@@ -69,10 +93,10 @@ export default function GallerySection() {
                     height: "100%",
                     // span 2(세로)는 gap까지 포함해 정확히 두 칸 높이를 채워야 밀림 없이 맞음 —
                     // 그래서 세로만 aspect-ratio 대신 height:100%로 실제 칸 높이에 맞춘다
-                    aspectRatio: span === 1 ? ratio : undefined,
+                    aspectRatio: span === 1 ? getRatio(src, ratio) : undefined,
                     backgroundImage: `url("${src}")`,
                     backgroundSize: "cover",
-                    backgroundPosition: "center",
+                    backgroundPosition: getPosition(src),
                   }}
                 />
               </div>

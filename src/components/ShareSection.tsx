@@ -56,7 +56,7 @@ export default function ShareSection() {
       window.Kakao.Share.sendDefault({
         objectType: "feed",
         content: {
-          title: `${WEDDING.groom.name} · ${WEDDING.bride.name} 결혼식`,
+          title: `${WEDDING.groom.fullName} · ${WEDDING.bride.fullName} 결혼식`,
           description: `${WEDDING.date.month}월 ${WEDDING.date.day}일(${WEDDING.date.dayName.slice(0, 1)}) ${WEDDING.date.displayTime} 결혼합니다.`,
           imageUrl: WEDDING.photos[0]?.startsWith("http")
             ? WEDDING.photos[0]
