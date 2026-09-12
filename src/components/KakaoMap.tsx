@@ -28,7 +28,7 @@ function loadKakaoMapsSdk(key: string): Promise<void> {
 
 export default function KakaoMap() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const { kakaoJsKey } = WEDDING.share;
   const { name, address: rawAddress } = WEDDING.venue;
   // 지오코딩은 층수/우편번호가 붙으면 실패하는 경우가 많아 순수 주소만 추출
@@ -36,7 +36,7 @@ export default function KakaoMap() {
 
   useEffect(() => {
     if (!kakaoJsKey || !containerRef.current) {
-      setError(true);
+      setError("kakaoJsKey가 설정되지 않았어요");
       return;
     }
     let cancelled = false;
@@ -50,7 +50,7 @@ export default function KakaoMap() {
           geocoder.addressSearch(address, (result: any[], status: string) => {
             if (cancelled) return;
             if (status !== window.kakao.maps.services.Status.OK || !result[0]) {
-              setError(true);
+              setError(`주소 검색 실패 (status: ${status}, 검색어: "${address}")`);
               return;
             }
             const coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
@@ -67,7 +67,7 @@ export default function KakaoMap() {
           });
         });
       })
-      .catch(() => setError(true));
+      .catch((err) => setError(`SDK 로드 실패: ${err?.message ?? err}`));
 
     return () => {
       cancelled = true;
@@ -86,11 +86,15 @@ export default function KakaoMap() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        padding: "12px",
+        textAlign: "center",
       }}
     >
       {error ? (
-        <span style={{ color: "var(--text-light)", fontSize: "13px" }}>
+        <span style={{ color: "var(--text-light)", fontSize: "12px", wordBreak: "break-all" }}>
           지도를 불러오지 못했어요
+          <br />
+          {error}
         </span>
       ) : (
         <div ref={containerRef} style={{ width: "100%", height: "100%" }} />

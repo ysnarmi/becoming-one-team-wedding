@@ -72,7 +72,7 @@ export const WEDDING = {
       "살랑이는 바람결에\n사랑이 묻어나는 계절입니다.\n\n여기 두 사람이 사랑을 맺어\n인생의 반려자가 되려 합니다.\n\n새 인생을 시작하는 이 자리에 오셔서\n축복해 주시면 감사하겠습니다.",
   },
   share: {
-    kakaoJsKey: "80e25dc574aa40addb3093a4cda76c63",
+    kakaoJsKey: "e5ec23024e576e40f0b3735b48c6bd8b",
   },
   photos: [
     "/images/gallery/1.jpg",
