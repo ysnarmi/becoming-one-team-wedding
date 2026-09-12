@@ -13,8 +13,8 @@ export const WEDDING = {
     father: "곡공의",
     mother: "김우영",
     accounts: [
-      { bank: "은행명", number: "000-000-000000", holder: "아버지이름" },
-      { bank: "은행명", number: "000-000-000000", holder: "곡원성" },
+      { bank: "신한은행", number: "110-534-778367", holder: "곡원성" },
+      { bank: "농협은행", number: "302-1449-6672-31", holder: "김우영" },
     ] as Account[],
   },
   bride: {
@@ -49,17 +49,20 @@ export const WEDDING = {
       {
         icon: "subway",
         title: "지하철",
-        content: "5호선 강동역 3번 출구 도보 2분(110m)",
+        content:
+          "서울 5호선 강동역 하차 - 3번출구 바로 앞\n※토,일요일 결혼식은 지하철 5호선 강동역을 이용해주세요.",
       },
       {
         icon: "bus",
-        title: "버스",
-        content: "버스 정류장 이름\n버스 번호",
+        title: "버스 (강동역 하차)",
+        content:
+          "간선버스(파랑): 130, 341, 342, 370\n지선버스(초록): 3214, 3316\n직행버스(빨강): 1113, 1113-1\n일반버스(초록): 1-4, 30-3, 112-1, 112-5\n공항버스: 6200 (길동사거리 하차)",
       },
       {
         icon: "car",
-        title: "주차안내",
-        content: "건물 내 400대, 건너편 200대\n총 600대 동시 주차 가능",
+        title: "자가용",
+        content:
+          "주차장 안내: 건물내(지하 1층~지하 3층), 옥외 주차장 및 지하철 환승 주차장 이용\n네비게이션: \"KDW웨딩\" 또는 \"서울시 강동구 천호대로 1102\" 입력",
       },
     ],
   },
@@ -69,7 +72,7 @@ export const WEDDING = {
       "살랑이는 바람결에\n사랑이 묻어나는 계절입니다.\n\n여기 두 사람이 사랑을 맺어\n인생의 반려자가 되려 합니다.\n\n새 인생을 시작하는 이 자리에 오셔서\n축복해 주시면 감사하겠습니다.",
   },
   share: {
-    kakaoJsKey: "e5ec23024e576e40f0b3735b48c6bd8b",
+    kakaoJsKey: "80e25dc574aa40addb3093a4cda76c63",
   },
   photos: [
     "/images/gallery/1.jpg",
@@ -79,10 +82,14 @@ export const WEDDING = {
     "/images/gallery/5.jpg",
     "/images/gallery/6.jpg",
     "/images/gallery/7.jpg",
-    "https://picsum.photos/seed/w8/600/600",
-    "https://picsum.photos/seed/w9/600/600",
-    "https://picsum.photos/seed/w10/600/600",
-    "https://picsum.photos/seed/w11/600/600",
-    "https://picsum.photos/seed/w12/600/600",
+    "/images/gallery/8.jpg",
+    "/images/gallery/9.jpg",
+    "/images/gallery/10.jpg",
+    "/images/gallery/11.jpg",
+    "/images/gallery/12.jpg",
+    "/images/gallery/13.jpg",
+    "/images/gallery/14.jpg",
+    "/images/gallery/15.jpg",
+    "/images/gallery/16.jpg",
   ],
 };

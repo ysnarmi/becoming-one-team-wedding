@@ -6,15 +6,17 @@ import { useState, type CSSProperties } from "react";
 
 const INITIAL_COUNT = 9;
 
-// 인물이 사진 위쪽에 있어서 crop 시 위쪽을 기준으로 보여줘야 하는 사진들
-const TOP_ALIGNED = new Set(["/images/gallery/3.jpg", "/images/gallery/4.jpg"]);
-
-// 2열 매스너리: 1열 세로 + 2열 가로가로 쌓임, 3장 단위로 반복
-const CYCLE: { col: 1 | 2; span: 1 | 2; ratio: string }[] = [
-  { col: 1, span: 2, ratio: "16 / 20" }, // 세로 (1열)
-  { col: 2, span: 1, ratio: "16 / 10" }, // 가로 (2열)
-  { col: 2, span: 1, ratio: "16 / 10" }, // 가로 (2열)
+// 2열 매스너리: [세로(1열)+가로가로(2열)] 유닛과 [가로가로(1열)+세로(2열)] 유닛을 번갈아 반복
+// rowOffset: 유닛 시작 행(base) 기준 상대 행 위치 — auto-placement에 맡기지 않고 직접 지정해 빈틈/밀림을 없앤다
+const CYCLE: { col: 1 | 2; span: 1 | 2; ratio: string; rowOffset: number }[] = [
+  { col: 1, span: 2, ratio: "16 / 20", rowOffset: 0 }, // 세로 (1열)
+  { col: 2, span: 1, ratio: "16 / 10", rowOffset: 0 }, // 가로 (2열)
+  { col: 2, span: 1, ratio: "16 / 10", rowOffset: 1 }, // 가로 (2열)
+  { col: 1, span: 1, ratio: "16 / 10", rowOffset: 2 }, // 가로 (1열)
+  { col: 1, span: 1, ratio: "16 / 10", rowOffset: 3 }, // 가로 (1열)
+  { col: 2, span: 2, ratio: "16 / 20", rowOffset: 2 }, // 세로 (2열)
 ];
+const ROWS_PER_CYCLE = 4;
 
 export default function GallerySection() {
   // 맨 위 타이틀 사진(photos[0])은 갤러리에서 제외
@@ -46,14 +48,16 @@ export default function GallerySection() {
           }}
         >
           {visible.map((src, i) => {
-            const { col, span, ratio } = CYCLE[i % CYCLE.length];
+            const { col, span, ratio, rowOffset } = CYCLE[i % CYCLE.length];
+            const cycleIndex = Math.floor(i / CYCLE.length);
+            const rowStart = cycleIndex * ROWS_PER_CYCLE + rowOffset + 1;
             return (
               <div
                 key={i}
                 onClick={() => setLightboxIndex(i)}
                 style={{
                   gridColumn: col,
-                  gridRow: `span ${span}`,
+                  gridRow: `${rowStart} / span ${span}`,
                   cursor: "pointer",
                   overflow: "hidden",
                   animation: showAll && i >= INITIAL_COUNT ? "fadeInGallery .7s ease-in-out" : undefined,
@@ -63,10 +67,12 @@ export default function GallerySection() {
                   style={{
                     width: "100%",
                     height: "100%",
-                    aspectRatio: ratio,
+                    // span 2(세로)는 gap까지 포함해 정확히 두 칸 높이를 채워야 밀림 없이 맞음 —
+                    // 그래서 세로만 aspect-ratio 대신 height:100%로 실제 칸 높이에 맞춘다
+                    aspectRatio: span === 1 ? ratio : undefined,
                     backgroundImage: `url("${src}")`,
                     backgroundSize: "cover",
-                    backgroundPosition: TOP_ALIGNED.has(src) ? "center top" : "center",
+                    backgroundPosition: "center",
                   }}
                 />
               </div>
@@ -131,7 +137,7 @@ export default function GallerySection() {
               fill
               style={{
                 objectFit: "contain",
-                objectPosition: TOP_ALIGNED.has(visible[lightboxIndex]) ? "center top" : "center",
+                objectPosition: "center",
               }}
             />
           </div>

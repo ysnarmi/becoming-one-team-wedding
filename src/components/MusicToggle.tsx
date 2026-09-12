@@ -6,18 +6,17 @@ const MUSIC_SRC = "/audio/bgm.mp3";
 
 export default function MusicToggle() {
   const audioRef = useRef<HTMLAudioElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
 
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
+    // 브라우저 자동재생 정책으로 소리 재생은 막힐 수 있지만,
+    // 아이콘은 항상 "켜짐" 상태로 보여준다 (사용자가 직접 누르면 확실히 재생됨)
     try {
-      audio.play()?.then(
-        () => setIsPlaying(true),
-        () => setIsPlaying(false)
-      );
+      audio.play()?.catch(() => {});
     } catch {
-      setIsPlaying(false);
+      /* 무시 */
     }
   }, []);
 

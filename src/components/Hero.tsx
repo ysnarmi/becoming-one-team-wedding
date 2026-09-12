@@ -65,7 +65,7 @@ export default function Hero() {
             src={photos[0]}
             alt="웨딩 사진"
             fill
-            style={{ objectFit: "cover", transform: "scale(1.25)" }}
+            style={{ objectFit: "cover" }}
             priority
           />
           <video

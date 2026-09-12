@@ -1,4 +1,5 @@
 import { WEDDING } from "@/lib/config";
+import KakaoMap from "./KakaoMap";
 
 const SubwayIcon = () => (
   <svg viewBox="0 0 32 32" width="20" height="20" fill="currentColor">
@@ -40,24 +41,7 @@ export default function DirectionsSection() {
         </div>
       </div>
 
-      {/* Map placeholder */}
-      <div
-        style={{
-          width: "100%",
-          aspectRatio: "16/9",
-          background: "#e0dbd5",
-          borderRadius: "8px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          marginBottom: "16px",
-          overflow: "hidden",
-        }}
-      >
-        <span style={{ color: "var(--text-light)", fontSize: "13px" }}>
-          지도를 연동해 주세요
-        </span>
-      </div>
+      <KakaoMap />
 
       {/* Navigation buttons */}
       <div
