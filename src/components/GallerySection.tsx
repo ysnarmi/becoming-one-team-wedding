@@ -6,15 +6,24 @@ import { useState, type CSSProperties } from "react";
 
 const INITIAL_COUNT = 9;
 
-// 2열 균일 그리드: 모든 사진을 같은 칸에 넣어 세로 길이를 전부 동일하게 맞춘다
-const PHOTO_RATIO = "16 / 10";
+// 2열 매스너리: [세로(1열)+가로가로(2열)] 유닛과 [가로가로(1열)+세로(2열)] 유닛을 번갈아 반복
+// rowOffset: 유닛 시작 행(base) 기준 상대 행 위치 — auto-placement에 맡기지 않고 직접 지정해 빈틈/밀림을 없앤다
+const CYCLE: { col: 1 | 2; span: 1 | 2; ratio: string; rowOffset: number }[] = [
+  { col: 1, span: 2, ratio: "16 / 20", rowOffset: 0 }, // 세로 (1열)
+  { col: 2, span: 1, ratio: "16 / 10", rowOffset: 0 }, // 가로 (2열)
+  { col: 2, span: 1, ratio: "16 / 10", rowOffset: 1 }, // 가로 (2열)
+  { col: 1, span: 1, ratio: "16 / 10", rowOffset: 2 }, // 가로 (1열)
+  { col: 1, span: 1, ratio: "16 / 10", rowOffset: 3 }, // 가로 (1열)
+  { col: 2, span: 2, ratio: "16 / 20", rowOffset: 2 }, // 세로 (2열)
+];
+const ROWS_PER_CYCLE = 4;
 
 // 사진별로 얼굴 위치가 달라서 crop 기준점을 하나씩 지정 (기본값: center)
 // 필요한 사진만 "top" / "bottom" / "20% 30%" 등으로 추가하면 됨
 const PHOTO_POSITION: Record<string, string> = {
   "/images/gallery/11.jpg": "top",
   "/images/gallery/10.jpg": "bottom",
-  "/images/gallery/5.jpg": "50% 70%",
+  "/images/gallery/5.jpg": "bottom",
 };
 const getPosition = (src: string) => PHOTO_POSITION[src] ?? "center";
 
@@ -34,7 +43,7 @@ export default function GallerySection() {
         <h2 className="section-heading">갤러리</h2>
       </div>
 
-      {/* 2-column uniform grid */}
+      {/* 2-column masonry grid (grid-area 기반) */}
       <div
         className="gallery-grid-container"
         style={{ margin: "0 16px" }}
@@ -47,27 +56,37 @@ export default function GallerySection() {
             gap: "4px",
           }}
         >
-          {visible.map((src, i) => (
-            <div
-              key={i}
-              onClick={() => setLightboxIndex(i)}
-              style={{
-                cursor: "pointer",
-                overflow: "hidden",
-                animation: showAll && i >= INITIAL_COUNT ? "fadeInGallery .7s ease-in-out" : undefined,
-              }}
-            >
+          {visible.map((src, i) => {
+            const { col, span, ratio, rowOffset } = CYCLE[i % CYCLE.length];
+            const cycleIndex = Math.floor(i / CYCLE.length);
+            const rowStart = cycleIndex * ROWS_PER_CYCLE + rowOffset + 1;
+            return (
               <div
+                key={i}
+                onClick={() => setLightboxIndex(i)}
                 style={{
-                  width: "100%",
-                  aspectRatio: PHOTO_RATIO,
-                  backgroundImage: `url("${src}")`,
-                  backgroundSize: "cover",
-                  backgroundPosition: getPosition(src),
+                  gridColumn: col,
+                  gridRow: `${rowStart} / span ${span}`,
+                  cursor: "pointer",
+                  overflow: "hidden",
+                  animation: showAll && i >= INITIAL_COUNT ? "fadeInGallery .7s ease-in-out" : undefined,
                 }}
-              />
-            </div>
-          ))}
+              >
+                <div
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    // span 2(세로)는 gap까지 포함해 정확히 두 칸 높이를 채워야 밀림 없이 맞음 —
+                    // 그래서 세로만 aspect-ratio 대신 height:100%로 실제 칸 높이에 맞춘다
+                    aspectRatio: span === 1 ? ratio : undefined,
+                    backgroundImage: `url("${src}")`,
+                    backgroundSize: "cover",
+                    backgroundPosition: getPosition(src),
+                  }}
+                />
+              </div>
+            );
+          })}
         </div>
       </div>
 
