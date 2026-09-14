@@ -29,6 +29,7 @@ const PHOTO_POSITION: Record<string, string> = {
   "/images/gallery/8.jpg": "50% 100%",
   "/images/gallery/13.jpg": "50% 0%",
   "/images/gallery/14.jpg": "50% 26%",
+  "/images/gallery/19.jpg": "50% 0%",
   // 가로 칸(16/10)에 들어가는 사진
   "/images/gallery/6.jpg": "50% 23%",
   "/images/gallery/7.jpg": "50% 0%",
@@ -40,6 +41,8 @@ const PHOTO_POSITION: Record<string, string> = {
   "/images/gallery/12.jpg": "50% 29%",
   "/images/gallery/15.jpg": "50% 47%",
   "/images/gallery/16.jpg": "50% 0%",
+  "/images/gallery/17.jpg": "50% 36%",
+  "/images/gallery/18.JPG": "50% 38%",
 };
 const getPosition = (src: string) => PHOTO_POSITION[src] ?? "center";
 

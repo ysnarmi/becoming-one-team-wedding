@@ -91,5 +91,8 @@ export const WEDDING = {
     "/images/gallery/14.jpg",
     "/images/gallery/15.jpg",
     "/images/gallery/16.jpg",
+    "/images/gallery/17.jpg",
+    "/images/gallery/18.JPG",
+    "/images/gallery/19.jpg",
   ],
 };
