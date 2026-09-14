@@ -18,12 +18,28 @@ const CYCLE: { col: 1 | 2; span: 1 | 2; ratio: string; rowOffset: number }[] = [
 ];
 const ROWS_PER_CYCLE = 4;
 
-// 사진별로 얼굴 위치가 달라서 crop 기준점을 하나씩 지정 (기본값: center)
-// 필요한 사진만 "top" / "bottom" / "20% 30%" 등으로 추가하면 됨
+// 사진별 crop 기준점 (기본값: center)
+// 원본은 대부분 세로 2:3인데 가로 칸(16/10)은 높이의 42%, 세로 칸(16/20)은 83%만 보인다.
+// 그래서 얼굴이 잘리지 않도록 사진마다 세로 기준점을 지정 —
+// 값은 "그 사진이 지금 들어가는 칸 모양" 기준이라, 사진 순서를 바꾸면 다시 잡아야 함
 const PHOTO_POSITION: Record<string, string> = {
-  "/images/gallery/11.jpg": "top",
-  "/images/gallery/10.jpg": "bottom",
-  "/images/gallery/5.jpg": "bottom",
+  // 세로 칸(16/20)에 들어가는 사진
+  "/images/gallery/5.jpg": "50% 92%",
+  "/images/gallery/4.jpg": "50% 56%",
+  "/images/gallery/8.jpg": "50% 100%",
+  "/images/gallery/13.jpg": "50% 0%",
+  "/images/gallery/14.jpg": "50% 26%",
+  // 가로 칸(16/10)에 들어가는 사진
+  "/images/gallery/6.jpg": "50% 23%",
+  "/images/gallery/7.jpg": "50% 0%",
+  "/images/gallery/2.jpg": "50% 38%",
+  "/images/gallery/3.jpg": "50% 24%",
+  "/images/gallery/9.jpg": "50% 47%",
+  "/images/gallery/10.jpg": "50% 80%",
+  "/images/gallery/11.jpg": "50% 0%",
+  "/images/gallery/12.jpg": "50% 29%",
+  "/images/gallery/15.jpg": "50% 47%",
+  "/images/gallery/16.jpg": "50% 0%",
 };
 const getPosition = (src: string) => PHOTO_POSITION[src] ?? "center";
 
