@@ -26,7 +26,7 @@ const PHOTO_POSITION: Record<string, string> = {
   // 세로 칸(16/20)에 들어가는 사진 — 높이의 83%만 보인다
   "/images/gallery/11.jpg": "50% 0%",
   "/images/gallery/16.jpg": "32% 50%", // 유일한 가로 사진이라 세로 칸에선 좌우로 잘린다
-  "/images/gallery/17.jpg": "50% 80%",
+  "/images/gallery/17.jpg": "50% 14%",
   "/images/gallery/4.jpg": "50% 56%",
   "/images/gallery/5.jpg": "50% 98%",
   "/images/gallery/10.jpg": "50% 100%",
@@ -41,7 +41,7 @@ const PHOTO_POSITION: Record<string, string> = {
   "/images/gallery/3.jpg": "50% 24%",
   "/images/gallery/6.jpg": "50% 19%",
   "/images/gallery/7.jpg": "50% 24%",
-  "/images/gallery/8.jpg": "50% 90%",
+  "/images/gallery/8.jpg": "50% 71%",
   "/images/gallery/9.jpg": "50% 29%",
 };
 const getPosition = (src: string) => PHOTO_POSITION[src] ?? "center";
