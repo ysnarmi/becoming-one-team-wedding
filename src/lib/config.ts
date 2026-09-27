@@ -77,7 +77,8 @@ export const WEDDING = {
   rsvp: {
     // 참석 의사를 받을 주소. 비워두면 폼은 동작하지만 어디에도 저장되지 않는다.
     // (Google Apps Script 웹앱 URL 등을 넣으면 됨)
-    endpoint: "",
+    endpoint:
+      "https://script.google.com/macros/s/AKfycbzOsrNBSNRqg7cl5kG8xHeJnl4BNEGZSQsnCW00eB5Gfz4oyJcy5fepgfNi3i2jV6c/exec",
     // 첫 방문 시 팝업을 자동으로 띄울지 여부
     autoOpen: true,
     message:
