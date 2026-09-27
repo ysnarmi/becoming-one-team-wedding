@@ -74,6 +74,15 @@ export const WEDDING = {
   share: {
     kakaoJsKey: "e5ec23024e576e40f0b3735b48c6bd8b",
   },
+  rsvp: {
+    // 참석 의사를 받을 주소. 비워두면 폼은 동작하지만 어디에도 저장되지 않는다.
+    // (Google Apps Script 웹앱 URL 등을 넣으면 됨)
+    endpoint: "",
+    // 첫 방문 시 팝업을 자동으로 띄울지 여부
+    autoOpen: true,
+    message:
+      "축하의 마음으로 참석해주시는 모든 분들께\n정성껏 준비한 자리를 대접하고자 합니다.\n\n참석 여부를 미리 알려주시면\n좋은 시간을 준비하는 데 큰 도움이 됩니다.",
+  },
   photos: [
     "/images/gallery/1.jpg",
     "/images/gallery/11.jpg",

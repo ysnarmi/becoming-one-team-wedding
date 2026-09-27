@@ -3,6 +3,7 @@ import InvitationText from "@/components/InvitationText";
 import CalendarSection from "@/components/CalendarSection";
 import GallerySection from "@/components/GallerySection";
 import DirectionsSection from "@/components/DirectionsSection";
+import RsvpSection from "@/components/RsvpSection";
 import AccountSection from "@/components/AccountSection";
 import MusicToggle from "@/components/MusicToggle";
 import ShareSection from "@/components/ShareSection";
@@ -27,6 +28,7 @@ export default function Home() {
         <CalendarSection />
         <GallerySection />
         <DirectionsSection />
+        <RsvpSection />
         <AccountSection />
         <ShareSection />
 
