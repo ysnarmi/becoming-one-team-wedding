@@ -39,11 +39,11 @@ export const WEDDING = {
     displayTime: "오전 11시",
   },
   venue: {
-    name: "KDW웨딩예식장",
+    name: "서울 강동 KDW웨딩홀",
     hall: "",
     address: "서울 강동구 천호대로 1102 3층 (05381)",
-    naverMapUrl: "https://map.naver.com/p/search/KDW웨딩예식장",
-    kakaoMapUrl: "https://map.kakao.com/?q=KDW웨딩예식장",
+    naverMapUrl: "https://map.naver.com/p/search/서울%20강동%20KDW웨딩홀",
+    kakaoMapUrl: "https://map.kakao.com/?q=서울%20강동%20KDW웨딩홀",
     tmapUrl: "https://www.tmap.co.kr",
     directions: [
       {
@@ -62,7 +62,7 @@ export const WEDDING = {
         icon: "car",
         title: "자가용",
         content:
-          "주차장 안내: 건물내(지하 1층~지하 3층), 옥외 주차장 및 지하철 환승 주차장 이용\n네비게이션: \"KDW웨딩\" 또는 \"서울시 강동구 천호대로 1102\" 입력",
+          "주차장 안내: 건물내(지하 1층~지하 3층), 옥외 주차장 및 지하철 환승 주차장 이용\n네비게이션: \"KDW웨딩홀\" 또는 \"서울시 강동구 천호대로 1102\" 입력",
       },
     ],
   },
