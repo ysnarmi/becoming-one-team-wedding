@@ -83,6 +83,9 @@ export const WEDDING = {
     autoOpen: true,
     message:
       "결혼식에 참석해주시는 모든 분들을\n더욱 특별하게 모시고자 하오니,\n참석 여부 전달을 부탁드립니다.",
+    // 첫 방문 팝업(인사말 단계)에 보여줄 문구
+    introMessage:
+      "축하의 마음으로 참석해주시는\n모든 분들을 귀하게 모실 수 있도록\n참석 의사를 전달 부탁드립니다.",
   },
   photos: [
     "/images/gallery/1.jpg",

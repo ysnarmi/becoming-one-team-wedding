@@ -12,7 +12,10 @@ const HIDE_KEY = "rsvp-popup-hidden-until";
 const todayKey = () => new Date().toISOString().slice(0, 10);
 
 export default function RsvpSection() {
-  const [open, setOpen] = useState(false);
+  // 첫 방문 팝업은 인사말(intro) → 입력폼(form) 두 단계로 뜬다
+  const [popup, setPopup] = useState<"intro" | "form" | null>(null);
+  // '오늘 하루 보지 않기' 는 intro 에서 체크하고, 팝업을 닫을 때 저장한다
+  const [hideToday, setHideToday] = useState(false);
 
   // 첫 방문 시 자동으로 팝업 — localStorage 는 클라이언트에서만 읽는다
   useEffect(() => {
@@ -24,19 +27,30 @@ export default function RsvpSection() {
       // 사생활 보호 모드 등에서 접근이 막히면 그냥 띄운다
     }
     if (hidden === todayKey()) return;
-    const timer = setTimeout(() => setOpen(true), 600);
+    const timer = setTimeout(() => setPopup("intro"), 600);
     return () => clearTimeout(timer);
   }, []);
 
   // 팝업이 열려 있는 동안 뒤 배경 스크롤 잠금
   useEffect(() => {
-    if (!open) return;
+    if (!popup) return;
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = prev;
     };
-  }, [open]);
+  }, [popup]);
+
+  const closePopup = () => {
+    if (hideToday) {
+      try {
+        window.localStorage.setItem(HIDE_KEY, todayKey());
+      } catch {
+        // 저장 실패해도 닫기는 정상 동작
+      }
+    }
+    setPopup(null);
+  };
 
   return (
     <div className="section">
@@ -59,13 +73,202 @@ export default function RsvpSection() {
       </p>
 
       <div style={{ textAlign: "center" }}>
-        <button onClick={() => setOpen(true)} style={primaryButtonStyle}>
+        <button onClick={() => setPopup("form")} style={primaryButtonStyle}>
           참석 여부 전달
         </button>
       </div>
 
-      {open && <RsvpModal onClose={() => setOpen(false)} />}
+      {popup === "intro" && (
+        <IntroModal
+          hideToday={hideToday}
+          onToggleHideToday={() => setHideToday((v) => !v)}
+          onNext={() => setPopup("form")}
+          onClose={closePopup}
+        />
+      )}
+      {popup === "form" && <RsvpModal onClose={closePopup} />}
     </div>
+  );
+}
+
+/** 첫 방문 시 뜨는 인사말 단계. 여기서 버튼을 누르면 입력폼으로 넘어간다. */
+function IntroModal({
+  hideToday,
+  onToggleHideToday,
+  onNext,
+  onClose,
+}: {
+  hideToday: boolean;
+  onToggleHideToday: () => void;
+  onNext: () => void;
+  onClose: () => void;
+}) {
+  const { groom, bride, date, venue } = WEDDING;
+  const when = `${date.year}년 ${date.month}월 ${date.day}일 ${date.dayName} ${date.displayTime}`;
+  const where = venue.hall ? `${venue.name} ${venue.hall}` : venue.name;
+
+  return (
+    <div onClick={onClose} style={overlayStyle}>
+      <div
+        onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-label="참석 의사 전달 안내"
+        style={{
+          width: "100%",
+          maxWidth: "340px",
+          background: "#fff",
+          border: "4px solid var(--cream-darker)",
+          borderRadius: "8px",
+          padding: "16px 24px 24px",
+          boxShadow: "0 10px 40px rgba(0,0,0,0.25)",
+        }}
+      >
+        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <button onClick={onClose} aria-label="닫기" style={closeButtonStyle}>
+            <CloseIcon />
+          </button>
+        </div>
+
+        <h3
+          style={{
+            margin: "2px 0 18px",
+            textAlign: "center",
+            fontSize: "19px",
+            fontWeight: 600,
+            color: "var(--text-dark)",
+          }}
+        >
+          참석 의사 전달
+        </h3>
+
+        <p
+          style={{
+            margin: 0,
+            textAlign: "center",
+            fontSize: "14px",
+            lineHeight: 2,
+            color: "var(--text-medium)",
+            whiteSpace: "pre-line",
+          }}
+        >
+          {WEDDING.rsvp.introMessage}
+        </p>
+
+        <hr
+          style={{
+            border: "none",
+            borderTop: "1px solid var(--cream-darker)",
+            margin: "22px 0 20px",
+          }}
+        />
+
+        <InfoRow icon={<HeartIcon />} strong>
+          신랑 {groom.fullName} &amp; 신부 {bride.fullName}
+        </InfoRow>
+        <InfoRow icon={<CalendarIcon />}>{when}</InfoRow>
+        <InfoRow icon={<PinIcon />}>{where}</InfoRow>
+
+        <button onClick={onNext} style={{ ...submitButtonStyle, marginTop: "24px" }}>
+          참석 의사 전달하기
+        </button>
+
+        <button
+          onClick={onToggleHideToday}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "7px",
+            width: "100%",
+            marginTop: "14px",
+            padding: 0,
+            border: "none",
+            background: "none",
+            fontFamily: "inherit",
+            fontSize: "13px",
+            color: hideToday ? "var(--rose-muted)" : "var(--text-light)",
+            cursor: "pointer",
+          }}
+        >
+          <CheckCircleIcon active={hideToday} />
+          오늘 하루 보지 않기
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function InfoRow({
+  icon,
+  strong,
+  children,
+}: {
+  icon: React.ReactNode;
+  strong?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: "10px",
+        marginBottom: "11px",
+        fontSize: "14px",
+        fontWeight: strong ? 600 : 400,
+        color: strong ? "var(--text-dark)" : "var(--text-medium)",
+      }}
+    >
+      <span style={{ flex: "0 0 17px", lineHeight: 0 }}>{icon}</span>
+      <span>{children}</span>
+    </div>
+  );
+}
+
+function HeartIcon() {
+  return (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
+      <path
+        d="M12 20s-7-4.35-7-9a4 4 0 0 1 7-2.65A4 4 0 0 1 19 11c0 4.65-7 9-7 9z"
+        stroke="var(--rose)"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function CalendarIcon() {
+  return (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--rose)" strokeWidth="1.5">
+      <rect x="3.5" y="5" width="17" height="15" rx="2" />
+      <path d="M3.5 9.5h17M8 3.5v3M16 3.5v3" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function PinIcon() {
+  return (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--rose)" strokeWidth="1.5">
+      <path d="M12 21s6.5-5.5 6.5-11a6.5 6.5 0 1 0-13 0C5.5 15.5 12 21 12 21z" strokeLinejoin="round" />
+      <circle cx="12" cy="10" r="2.3" />
+    </svg>
+  );
+}
+
+function CheckCircleIcon({ active }: { active: boolean }) {
+  return (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="12" r="10" fill={active ? "var(--rose)" : "var(--cream-darker)"} />
+      <path
+        d="M7.5 12.4l3 3 6-6.4"
+        stroke="#fff"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }
 
@@ -75,21 +278,9 @@ function RsvpModal({ onClose }: { onClose: () => void }) {
   const [count, setCount] = useState("");
   const [companions, setCompanions] = useState("");
   const [meal, setMeal] = useState<Meal>("예정");
-  const [hideToday, setHideToday] = useState(false);
   const [sending, setSending] = useState(false);
   const [done, setDone] = useState(false);
   const [error, setError] = useState("");
-
-  const close = () => {
-    if (hideToday) {
-      try {
-        window.localStorage.setItem(HIDE_KEY, todayKey());
-      } catch {
-        // 저장 실패해도 닫기는 정상 동작
-      }
-    }
-    onClose();
-  };
 
   const handleSubmit = async () => {
     const trimmedName = name.trim();
@@ -122,19 +313,7 @@ function RsvpModal({ onClose }: { onClose: () => void }) {
   };
 
   return (
-    <div
-      onClick={close}
-      style={{
-        position: "fixed",
-        inset: 0,
-        background: "rgba(0,0,0,0.55)",
-        zIndex: 1000,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "20px",
-      }}
-    >
+    <div onClick={onClose} style={overlayStyle}>
       <div
         onClick={(e) => e.stopPropagation()}
         role="dialog"
@@ -153,7 +332,7 @@ function RsvpModal({ onClose }: { onClose: () => void }) {
       >
         <style>{`.rsvp-input::placeholder { color: #AAA; }`}</style>
         {done ? (
-          <Done onClose={close} />
+          <Done onClose={onClose} />
         ) : (
           <>
             <div
@@ -175,7 +354,7 @@ function RsvpModal({ onClose }: { onClose: () => void }) {
               >
                 참석 의사 전달
               </h3>
-              <button onClick={close} aria-label="닫기" style={closeButtonStyle}>
+              <button onClick={onClose} aria-label="닫기" style={closeButtonStyle}>
                 <CloseIcon />
               </button>
             </div>
@@ -267,27 +446,6 @@ function RsvpModal({ onClose }: { onClose: () => void }) {
             >
               {sending ? "전달 중..." : "참석 의사 전달하기"}
             </button>
-
-            <label
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "6px",
-                marginTop: "14px",
-                fontSize: "12px",
-                color: "var(--text-light)",
-                cursor: "pointer",
-              }}
-            >
-              <input
-                type="checkbox"
-                checked={hideToday}
-                onChange={(e) => setHideToday(e.target.checked)}
-                style={{ accentColor: "var(--rose)", cursor: "pointer" }}
-              />
-              오늘 하루 보지 않기
-            </label>
           </>
         )}
       </div>
@@ -434,6 +592,17 @@ function CloseIcon() {
     </svg>
   );
 }
+
+const overlayStyle: CSSProperties = {
+  position: "fixed",
+  inset: 0,
+  background: "rgba(0,0,0,0.55)",
+  zIndex: 1000,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  padding: "20px",
+};
 
 const inputStyle: CSSProperties = {
   width: "100%",
