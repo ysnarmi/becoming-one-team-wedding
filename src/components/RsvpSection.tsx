@@ -42,7 +42,7 @@ export default function RsvpSection() {
     <div className="section">
       <div className="section-title">
         <span className="section-subtitle">RSVP</span>
-        <h2 className="section-heading">참석 의사 전달</h2>
+        <h2 className="section-heading">참석 여부 전달</h2>
       </div>
 
       <p
@@ -60,7 +60,7 @@ export default function RsvpSection() {
 
       <div style={{ textAlign: "center" }}>
         <button onClick={() => setOpen(true)} style={primaryButtonStyle}>
-          참석 의사 전달하기
+          참석 여부 전달
         </button>
       </div>
 
