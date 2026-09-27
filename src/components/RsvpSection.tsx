@@ -146,11 +146,12 @@ function RsvpModal({ onClose }: { onClose: () => void }) {
           maxHeight: "calc(100vh - 40px)",
           overflowY: "auto",
           background: "#fff",
-          borderRadius: "14px",
-          padding: "26px 22px 22px",
+          borderRadius: "16px",
+          padding: "28px 24px 24px",
           boxShadow: "0 10px 40px rgba(0,0,0,0.25)",
         }}
       >
+        <style>{`.rsvp-input::placeholder { color: #AAA; }`}</style>
         {done ? (
           <Done onClose={close} />
         ) : (
@@ -166,10 +167,10 @@ function RsvpModal({ onClose }: { onClose: () => void }) {
               <h3
                 style={{
                   margin: 0,
-                  fontSize: "17px",
-                  fontWeight: 500,
-                  color: "var(--text-dark)",
-                  letterSpacing: "0.5px",
+                  fontSize: "19px",
+                  fontWeight: 600,
+                  color: "#222",
+                  letterSpacing: "-0.2px",
                 }}
               >
                 참석 의사 전달
@@ -187,7 +188,7 @@ function RsvpModal({ onClose }: { onClose: () => void }) {
                     label={s}
                     selected={side === s}
                     onClick={() => setSide(s)}
-                    grow
+                    tone={s === "신랑측" ? "blue" : "pink"}
                   />
                 ))}
               </div>
@@ -197,6 +198,7 @@ function RsvpModal({ onClose }: { onClose: () => void }) {
               <input
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                className="rsvp-input"
                 style={inputStyle}
                 maxLength={20}
               />
@@ -210,6 +212,7 @@ function RsvpModal({ onClose }: { onClose: () => void }) {
                 }
                 inputMode="numeric"
                 placeholder="본인 포함 총 참석인원"
+                className="rsvp-input"
                 style={inputStyle}
               />
             </Field>
@@ -219,6 +222,7 @@ function RsvpModal({ onClose }: { onClose: () => void }) {
                 value={companions}
                 onChange={(e) => setCompanions(e.target.value)}
                 placeholder="함께 오시는 분 성함"
+                className="rsvp-input"
                 style={inputStyle}
                 maxLength={60}
               />
@@ -232,7 +236,7 @@ function RsvpModal({ onClose }: { onClose: () => void }) {
                     label={m}
                     selected={meal === m}
                     onClick={() => setMeal(m)}
-                    grow
+                    tone="outline"
                   />
                 ))}
               </div>
@@ -255,10 +259,8 @@ function RsvpModal({ onClose }: { onClose: () => void }) {
               onClick={handleSubmit}
               disabled={sending}
               style={{
-                ...primaryButtonStyle,
-                display: "block",
-                width: "100%",
-                marginTop: "22px",
+                ...submitButtonStyle,
+                marginTop: "24px",
                 opacity: sending ? 0.6 : 1,
                 cursor: sending ? "default" : "pointer",
               }}
@@ -339,7 +341,7 @@ function Done({ onClose }: { onClose: () => void }) {
         <br />
         결혼식 당일에 뵙겠습니다.
       </p>
-      <button onClick={onClose} style={{ ...primaryButtonStyle, width: "100%" }}>
+      <button onClick={onClose} style={submitButtonStyle}>
         닫기
       </button>
     </div>
@@ -358,16 +360,16 @@ function Field({
       style={{
         display: "flex",
         alignItems: "center",
-        gap: "12px",
-        marginBottom: "12px",
+        gap: "14px",
+        marginBottom: "14px",
       }}
     >
       <span
         style={{
-          flex: "0 0 62px",
-          fontSize: "13px",
-          color: "var(--text-dark)",
-          letterSpacing: "0.5px",
+          flex: "0 0 70px",
+          fontSize: "15px",
+          fontWeight: 500,
+          color: "#333",
         }}
       >
         {label}
@@ -377,32 +379,42 @@ function Field({
   );
 }
 
+// 선택 표시 방식이 항목마다 다르다 —
+// 구분은 신랑(파랑)/신부(분홍)로 채우고, 식사여부는 흰 배경 + 회색 테두리로 표시
+const SELECTED_FILL = { blue: "#87A5DF", pink: "#DF86A4" };
+
 function Choice({
   label,
   selected,
   onClick,
-  grow,
+  tone,
 }: {
   label: string;
   selected: boolean;
   onClick: () => void;
-  grow?: boolean;
+  tone: "blue" | "pink" | "outline";
 }) {
+  const filled = selected && tone !== "outline";
+  const outlined = selected && tone === "outline";
+
   return (
     <button
       type="button"
       onClick={onClick}
       style={{
-        flex: grow ? 1 : "0 0 auto",
-        height: "42px",
-        border: selected ? "1px solid var(--rose)" : "1px solid transparent",
-        borderRadius: "6px",
-        background: selected ? "var(--rose-pale)" : "var(--cream-dark)",
-        color: selected ? "var(--rose-muted)" : "var(--text-light)",
-        fontSize: "14px",
+        flex: 1,
+        height: "44px",
+        border: outlined ? "1px solid #999" : "1px solid transparent",
+        borderRadius: "4px",
+        background: filled
+          ? SELECTED_FILL[tone as "blue" | "pink"]
+          : outlined
+            ? "#fff"
+            : "#F9F9F9",
+        color: filled ? "#fff" : outlined ? "#333" : "#666",
+        fontSize: "15px",
         fontFamily: "inherit",
         cursor: "pointer",
-        letterSpacing: "0.5px",
       }}
     >
       {label}
@@ -412,10 +424,10 @@ function Choice({
 
 function CloseIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
       <path
         d="M6 6l12 12M18 6L6 18"
-        stroke="var(--text-medium)"
+        stroke="#333"
         strokeWidth="1.6"
         strokeLinecap="round"
       />
@@ -425,15 +437,28 @@ function CloseIcon() {
 
 const inputStyle: CSSProperties = {
   width: "100%",
-  height: "42px",
-  padding: "0 12px",
+  height: "44px",
+  padding: "0 14px",
   border: "1px solid transparent",
-  borderRadius: "6px",
-  background: "var(--cream-dark)",
-  color: "var(--text-dark)",
-  fontSize: "14px",
+  borderRadius: "4px",
+  background: "#F9F9F9",
+  color: "#333",
+  fontSize: "15px",
   fontFamily: "inherit",
   outline: "none",
+};
+
+// 모달 안 전송 버튼은 원본 디자인 색을 그대로 쓴다
+const submitButtonStyle: CSSProperties = {
+  width: "100%",
+  height: "52px",
+  border: "1px solid #E7DED0",
+  borderRadius: "4px",
+  background: "#FAF7F3",
+  color: "#A57056",
+  fontSize: "17px",
+  fontFamily: "inherit",
+  cursor: "pointer",
 };
 
 const primaryButtonStyle: CSSProperties = {
