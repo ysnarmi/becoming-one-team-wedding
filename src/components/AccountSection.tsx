@@ -254,11 +254,16 @@ export default function AccountSection() {
           margin: "0 0 24px",
         }}
       >
-        참석이 어려우신 분들을 위해
+        멀리서도 축하의 마음을
         <br />
-        계좌번호를 기재하였습니다.
+        전하고 싶으신 분들을 위해
         <br />
-        너그러운 마음으로 양해 부탁드립니다.
+        계좌번호를 안내드립니다.
+        <br />
+        <br />
+        소중한 축하를 보내주셔서 감사드리며,
+        <br />
+        따뜻한 마음에 깊이 간직하겠습니다.
       </p>
 
       <div style={{ padding: "0 var(--account-margin-lr, 1.1rem)" }}>
